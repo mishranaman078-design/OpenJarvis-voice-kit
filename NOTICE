@@ -1,0 +1,23 @@
+OpenJarvis Voice Kit
+
+This project is an unofficial add-on for OpenJarvis
+(https://github.com/open-jarvis/OpenJarvis), which is licensed under the
+Apache License 2.0. A copy of that licence is in the LICENSE file.
+
+patches/voice-kit.patch changes these OpenJarvis files:
+
+- src/openjarvis/connectors/oauth.py: Gmail and Calendar access is read-only.
+- src/openjarvis/cli/connect_cmd.py: pasted secrets and tokens stay hidden.
+- src/openjarvis/cli/chat_cmd.py: adds voice commands, web search and answers
+  from calendar and email.
+- src/openjarvis/system/core.py: Telegram questions can use calendar and email.
+
+The patch also adds these new files:
+
+- src/openjarvis/cli/_my_day.py
+- src/openjarvis/cli/_open_app.py
+- src/openjarvis/cli/_web_answer.py
+
+"Jarvis" is only the assistant's name here. This project is not affiliated with
+or endorsed by the OpenJarvis team, Marvel, Google, YouTube, Spotify, Telegram
+or anyone else mentioned.
