@@ -4,6 +4,11 @@
 set -euo pipefail
 
 KIT="$(cd "$(dirname "$0")" && pwd)"
+# Works whether the files are in patches/ and scripts/ or all in one folder.
+PATCHES="$KIT/patches"
+[[ -d "$PATCHES" ]] || PATCHES="$KIT"
+SCRIPTS="$KIT/scripts"
+[[ -d "$SCRIPTS" ]] || SCRIPTS="$KIT"
 HOME_DIR="${OPENJARVIS_HOME:-$HOME/.openjarvis}"
 SRC="$HOME_DIR/src"
 VENV="$HOME_DIR/.venv"
@@ -27,8 +32,8 @@ rm -f "$INSTALLER"
 
 echo
 echo "Step 2 of 6: adding the Voice Kit changes."
-git -C "$SRC" checkout -q "$(cat "$KIT/patches/BASE_COMMIT")"
-git -C "$SRC" apply "$KIT/patches/voice-kit.patch"
+git -C "$SRC" checkout -q "$(cat "$PATCHES/BASE_COMMIT")"
+git -C "$SRC" apply "$PATCHES/voice-kit.patch"
 
 echo
 echo "Step 3 of 6: installing voice, server and search add-ons."
@@ -113,11 +118,11 @@ echo "Step 6 of 6: adding the commands and desktop icon."
 mkdir -p "$HOME/.local/bin"
 {
   echo "#!$VENV/bin/python"
-  tail -n +2 "$KIT/scripts/jarvis-do"
+  tail -n +2 "$SCRIPTS/jarvis-do"
 } > "$HOME/.local/bin/jarvis-do"
 chmod 755 "$HOME/.local/bin/jarvis-do"
-cp "$KIT/scripts/set-telegram.sh" "$HOME_DIR/set-telegram.sh"
-cp "$KIT/scripts/Talk to Jarvis.command" "$HOME/Desktop/Talk to Jarvis.command"
+cp "$SCRIPTS/set-telegram.sh" "$HOME_DIR/set-telegram.sh"
+cp "$SCRIPTS/Talk to Jarvis.command" "$HOME/Desktop/Talk to Jarvis.command"
 chmod 755 "$HOME/Desktop/Talk to Jarvis.command"
 if [[ ! -x "$HOME/.local/bin/ollama" ]] && [[ -x /Applications/Ollama.app/Contents/Resources/ollama ]]; then
   ln -sf /Applications/Ollama.app/Contents/Resources/ollama "$HOME/.local/bin/ollama"
